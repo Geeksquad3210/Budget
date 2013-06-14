@@ -14,7 +14,6 @@ public class Menu extends DefaultHook {
     private Screen screen;
     private Font bigFont, smallFont;
     private Button[] buttons;
-    private Star[] stars;
 
     public Menu(Screen scr) {
         screen = scr;
@@ -26,16 +25,13 @@ public class Menu extends DefaultHook {
         int cx = screen.getWidth() / 2,
             cy = screen.getHeight() / 2;
 
-        buttons = new Button[4];
-        buttons[0] = new Button(screen, cx - 200, cy - 160, 400, 120, "Play", 48,
+        buttons = new Button[2];
+        buttons[0] = new Button(screen, cx - 200, cy - 160, 400, 120, "New Account", 48,
                                 new PlayButtonCallback());
 
-        buttons[3] = new Button(screen, cx + 10, cy + 80, 190, 80, "Quit", 18,
+        buttons[1] = new Button(screen, cx + 10, cy + 80, 190, 80, "Quit", 18,
                                 new QuitButtonCallback());
-
-        stars = new Star[400];
-        for (int i = 0; i < 400; i++)
-            stars[i] = new Star(screen.getWidth(), screen.getHeight());
+        
     }
 
     public interface Callback {
@@ -61,17 +57,13 @@ public class Menu extends DefaultHook {
     public void step(Graphics2D graphics) {
         drawTitle(graphics);
         graphics.setColor(Color.WHITE);
-        for (Star star : stars) {
-            star.update();
-            star.draw(graphics);
-        }
         for (Button button : buttons)
             button.draw(graphics);
     }
 
     private void drawTitle(Graphics2D graphics) {
-        String text1 = "STARLORN";
-        String text2 = "by Josh Hofing, Ben Kurtovic, and Victor Jiao";
+        String text1 = "Money Planner";
+        String text2 = "code by Victor Jiao";
         int xOffset1 = screen.getXOffset(graphics, bigFont, text1);
         int xOffset2 = screen.getXOffset(graphics, smallFont, text2);
         graphics.setColor(Color.GRAY);

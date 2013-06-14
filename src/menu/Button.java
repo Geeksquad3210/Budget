@@ -59,8 +59,8 @@ public class Button {
 
     public void draw(Graphics2D graphics) {
         if (xOffset == -1) {
-            xOffset = (int) (rect.width - font.getStringBounds(label, graphics.getFontRenderContext()).getWidth()) / 2;
-            yOffset = (int) (font.getLineMetrics(label, graphics.getFontRenderContext()).getAscent() + rect.height) / 2;
+            xOffset = (int) ((rect.width - font.getStringBounds(label, graphics.getFontRenderContext()).getWidth()) * .48);
+            yOffset = (int) ((font.getLineMetrics(label, graphics.getFontRenderContext()).getAscent() + rect.height) * .48);
         }
 
         if (isPressed())

@@ -14,7 +14,7 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
 
     private static final long serialVersionUID = 1L;
     private static final int MAX_FPS = 60;
-    private static final String FONT_FILE = "res/font.ttf";
+    private static final String FONT_FILE = "res/Tahoma.ttf";
 
     private boolean running;
     private long lastTick;
@@ -78,6 +78,9 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
         Graphics2D graphics = (Graphics2D) strategy.getDrawGraphics();
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
+        graphics.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         graphics.fillRect(0, 0, getWidth(), getHeight());
         hooks.peek().step(graphics);
         graphics.dispose();
