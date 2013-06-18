@@ -97,7 +97,7 @@ public class NewAccountMenu extends DefaultHook {
 	@Override
 	public void keyPressed(KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.VK_ENTER)
-			BudgetData.put(_name.getValue());
+			BudgetData.put(_name.getValue().substring(0, _name.getValue().length() - 1));
 	}
 	
 	@Override

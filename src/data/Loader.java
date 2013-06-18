@@ -9,11 +9,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Loader implements Serializable{
-	private static void saveData(BudgetData data, String filePath) throws IOException {
+	public static void saveData(String filePath) throws IOException {
 		ObjectOutputStream outputStream = null;
 		try {
 			outputStream = new ObjectOutputStream(new FileOutputStream(filePath));
-			outputStream.writeObject(data);
+			outputStream.writeObject(new BudgetData());
 		} catch(FileNotFoundException ex){
 			System.out.println("Error: Save data not found.");
 			ex.printStackTrace();
@@ -31,22 +31,19 @@ public class Loader implements Serializable{
 		}
 	}
 	
-	public static BudgetData loadGame(String filePath) throws IOException{
+	public static void loadData(String filePath) throws IOException{
 		try {
 			FileInputStream fileIn = new FileInputStream(filePath);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			return (BudgetData) in.readObject();
+			BudgetData.put((BudgetData)in.readObject());
 		} catch(FileNotFoundException ex){
 			System.out.println("Error: Save data not found.");
 			ex.printStackTrace();
-			return null;
 		} catch(IOException ex){
 			ex.printStackTrace();
-			return null;
 		} catch(ClassNotFoundException ex){
 			System.out.println("The programmer messed up this time.");
 			ex.printStackTrace();
-			return null;
 		}
 	}
 }
