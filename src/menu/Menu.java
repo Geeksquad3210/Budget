@@ -28,10 +28,10 @@ public class Menu extends DefaultHook {
             cy = screen.getHeight() / 2;
 
         buttons = new Button[2];
-        buttons[0] = new Button(screen, cx - 200, cy - 160, 400, 120, "New Account", 48,
+        buttons[0] = new Button(screen, cx - 200, cy - 120, 400, 120, "New Account", 48,
                                 new NewAccountCallback());
 
-        buttons[1] = new Button(screen, cx + 10, cy + 80, 190, 80, "Quit", 18,
+        buttons[1] = new Button(screen, 10, 550, 100, 40, "Quit",	14,
                                 new QuitButtonCallback());
         
     }
@@ -39,8 +39,8 @@ public class Menu extends DefaultHook {
     private class NewAccountCallback implements Callback {
         public void invoke() {
             NewAccountMenu newAccScrn = new NewAccountMenu(screen);
-            screen.popHook();
             newAccScrn.setup();
+            screen.popHook();
             screen.pushHook(newAccScrn);
         }
     }
@@ -69,10 +69,10 @@ public class Menu extends DefaultHook {
         int xOffset2 = screen.getXOffset(graphics, smallFont, text2);
         graphics.setColor(Color.GRAY);
         graphics.setFont(bigFont);
-        graphics.drawString(text1, xOffset1, screen.getHeight() / 2 - 250);
+        graphics.drawString(text1, xOffset1, screen.getHeight() / 2 - 230);
         graphics.setColor(Color.GRAY);
         graphics.setFont(smallFont);
-        graphics.drawString(text2, xOffset2, screen.getHeight() / 2 - 200);
+        graphics.drawString(text2, xOffset2, screen.getHeight() / 2 - 180);
     }
 
     @Override

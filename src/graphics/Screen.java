@@ -32,7 +32,7 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
     }
 
     public void setup() {
-        setPreferredSize(new Dimension(800, 640));
+        setPreferredSize(new Dimension(800, 600));
 
         setFocusable(true);
         addKeyListener(this);
@@ -40,7 +40,7 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
         addMouseMotionListener(this);
 
         frame.setTitle("MoneyPlanner");
-        //frame.setResizable(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
         frame.pack();
