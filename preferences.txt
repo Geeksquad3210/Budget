@@ -1,0 +1,2 @@
+screenHeight : 1024
+screenWidth : 1280
