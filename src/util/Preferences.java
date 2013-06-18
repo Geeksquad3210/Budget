@@ -63,8 +63,8 @@ public class Preferences {
     }
 
     private static void loadDefault(boolean force) {
-        if (force || !_data.containsKey("screenHeight")) _data.put("screenHeight", 1024);
-        if (force || !_data.containsKey("screenWidth")) _data.put("screenWidth", 1280);
+        if (force || !_data.containsKey("screenHeight")) _data.put("screenHeight", 640);
+        if (force || !_data.containsKey("screenWidth")) _data.put("screenWidth", 800);
     }
 
 

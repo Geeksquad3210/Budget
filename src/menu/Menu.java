@@ -1,14 +1,15 @@
 package menu;
 
-import java.awt.Color; 
+import java.awt.Color;  
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import graphics.DefaultHook;
 import graphics.Screen;
-
+ 
 public class Menu extends DefaultHook {
 
     private Screen screen;
@@ -18,7 +19,8 @@ public class Menu extends DefaultHook {
     public Menu(Screen scr) {
         screen = scr;
         bigFont = screen.getFont().deriveFont(64f);
-        smallFont = screen.getFont().deriveFont(11f);
+        smallFont = screen.getFont().deriveFont(14f);
+        
     }
 
     public void setup() {
@@ -27,23 +29,19 @@ public class Menu extends DefaultHook {
 
         buttons = new Button[2];
         buttons[0] = new Button(screen, cx - 200, cy - 160, 400, 120, "New Account", 48,
-                                new PlayButtonCallback());
+                                new NewAccountCallback());
 
         buttons[1] = new Button(screen, cx + 10, cy + 80, 190, 80, "Quit", 18,
                                 new QuitButtonCallback());
         
     }
 
-    public interface Callback {
-        void invoke();
-    }
-
-    private class PlayButtonCallback implements Callback {
+    private class NewAccountCallback implements Callback {
         public void invoke() {
-       //     World world = new World(screen);
-        //    screen.popHook();
-        //    screen.pushHook(world);
-        //    screen.hideCursor();
+            NewAccountMenu newAccScrn = new NewAccountMenu(screen);
+            screen.popHook();
+            newAccScrn.setup();
+            screen.pushHook(newAccScrn);
         }
     }
 
@@ -55,6 +53,9 @@ public class Menu extends DefaultHook {
 
     @Override
     public void step(Graphics2D graphics) {
+    	graphics.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         drawTitle(graphics);
         graphics.setColor(Color.WHITE);
         for (Button button : buttons)
@@ -69,16 +70,14 @@ public class Menu extends DefaultHook {
         graphics.setColor(Color.GRAY);
         graphics.setFont(bigFont);
         graphics.drawString(text1, xOffset1, screen.getHeight() / 2 - 250);
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(Color.GRAY);
         graphics.setFont(smallFont);
         graphics.drawString(text2, xOffset2, screen.getHeight() / 2 - 200);
     }
 
     @Override
     public void keyReleased(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.VK_P)
-            new PlayButtonCallback().invoke();
-        else if (event.getKeyCode() == KeyEvent.VK_Q)
+        if (event.getKeyCode() == KeyEvent.VK_Q)
             new QuitButtonCallback().invoke();
     }
 
@@ -96,7 +95,15 @@ public class Menu extends DefaultHook {
 
     @Override
     public void mouseMoved(MouseEvent event) {
-        for (Button button : buttons)
+        for (Button button : buttons){
             button.update(event);
+        }
+    }
+    
+    @Override
+    public void mouseDragged(MouseEvent event) {
+        for (Button button : buttons){
+            button.update(event);
+        }
     }
 }

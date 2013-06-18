@@ -1,6 +1,6 @@
 package menu;
 
-import java.awt.Color; 
+import java.awt.Color;  
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -11,20 +11,20 @@ import graphics.Screen;
 public class Button {
 
     private Rectangle rect;
-    private Menu.Callback callback;
+    private Callback callback;
     private Font font;
     private String label;
     private int xOffset, yOffset;
-    private boolean pressed, hover;
+    private boolean pressed, hover, toggle, oldButtonDown;
 
     public Button(Screen screen, int x, int y, int w, int h, String text,
-                  float size, Menu.Callback cb) {
+                  float size, Callback cb) {
         rect = new Rectangle(x, y, w, h);
         callback = cb;
         font = screen.getFont().deriveFont(size);
         label = text;
         xOffset = yOffset = -1;
-        pressed = hover = false;
+        pressed = hover = toggle = oldButtonDown = false;
     }
 
     public boolean isPressed() {
@@ -44,17 +44,23 @@ public class Button {
             callback.invoke();
             return;
         }
-
-        if (event.getX() >= rect.x && event.getX() <= rect.x + rect.width
-         && event.getY() >= rect.y && event.getY() <= rect.y + rect.height)
-            hover = true;
-        else
-            hover = false;
-
-        if (hover && buttonDown)
-            pressed = true;
-        else
-            pressed = false;
+        
+        if (!buttonDown || toggle){
+        	hover = event.getX() >= rect.x && event.getX() <= rect.x + rect.width &&
+        	event.getY() >= rect.y && event.getY() <= rect.y + rect.height;
+        }
+        
+        if (hover && buttonDown && !oldButtonDown)
+        	toggle = true;
+        if (!buttonDown)
+        	toggle = false;
+       
+        if (hover && toggle)
+        	pressed = true;
+        if (!hover || !buttonDown)
+        	pressed = false;
+        
+        oldButtonDown = buttonDown;
     }
 
     public void draw(Graphics2D graphics) {
@@ -64,13 +70,13 @@ public class Button {
         }
 
         if (isPressed())
-            graphics.setColor(Color.RED);
+            graphics.setColor(new Color(.3f, .3f, .3f));
         else if (isHover())
-            graphics.setColor(Color.GREEN);
+            graphics.setColor(new Color(.6f, .6f, .6f));
         else
-            graphics.setColor(Color.WHITE);
+            graphics.setColor(Color.GRAY);
         graphics.fill(rect);
-        graphics.setColor(Color.GRAY);
+        graphics.setColor(Color.WHITE);
         graphics.setFont(font);
         graphics.drawString(label, rect.x + xOffset, rect.y + yOffset);
     }

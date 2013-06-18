@@ -21,6 +21,7 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
     private Stack<Hook> hooks;
     private JFrame frame;
     private Font font;
+    private int lols;
 
     public Screen() {
         running = false;
@@ -31,22 +32,20 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
     }
 
     public void setup() {
-        Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        setPreferredSize(new Dimension(bounds.width, bounds.height));
+        setPreferredSize(new Dimension(800, 640));
 
         setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
 
-        frame.setTitle("Starlorn");
-        frame.setResizable(true);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
+        frame.setTitle("MoneyPlanner");
+        //frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
         frame.pack();
         frame.setVisible(true);
+        lols = 0;
     }
 
     private Font loadFont() {
@@ -76,15 +75,17 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
             return;
         }
         Graphics2D graphics = (Graphics2D) strategy.getDrawGraphics();
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(Color.WHITE);
         graphics.setFont(font);
-        graphics.setRenderingHint(
-                RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics.fillRect(0, 0, getWidth(), getHeight());
         hooks.peek().step(graphics);
         graphics.dispose();
         strategy.show();
+
     }
 
     private void tick() {
