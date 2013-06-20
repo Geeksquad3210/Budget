@@ -1,14 +1,17 @@
 
 
-import graphics.Screen;
-import menu.Menu;
+import data.FilesInFolder;
+import graphics.Screen; 
+import menu.IntroMenu;
 import util.Preferences;
 
 public class Budget {
 
     public static void main(String[] args) {
+    	FilesInFolder.setup();
+    	
         Screen screen = new Screen();
-        Menu menu = new Menu(screen);
+        IntroMenu menu = new IntroMenu(screen);
 
         screen.setup();
         Preferences.load();
@@ -17,5 +20,6 @@ public class Budget {
         screen.run();
         Preferences.save();
         System.exit(0);
+       
     }
 }

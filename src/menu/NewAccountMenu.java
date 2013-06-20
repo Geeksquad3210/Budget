@@ -13,6 +13,7 @@ import graphics.DefaultHook;
 import graphics.Screen;
 
 import data.BudgetData;
+import data.FilesInFolder;
 
 public class NewAccountMenu extends DefaultHook {
 
@@ -21,50 +22,66 @@ public class NewAccountMenu extends DefaultHook {
 	private Font _title, _text;
 	private Button[] _buttons;
 	private TextBox _name;
+	private boolean _nameTaken;
 
 	public NewAccountMenu(Screen scr) {
 		_screen = scr;
 		_title = _screen.getFont().deriveFont(64f);
 		_text = _screen.getFont().deriveFont(11f);
-
+		_nameTaken = false;
 	}
 
 	public void setup() {
 
 		_buttons = new Button[2];
-		_buttons[0] = new Button(_screen, 525, 400, 150, 75,
-				"Create", 36, new MainMenuLayoutCallback());
+		_buttons[0] = new Button(_screen, 525, 400, 150, 75, "Create", 36,
+				new MainMenuLayoutCallback());
 
-		_buttons[1] = new Button(_screen, 10, 550, 100, 40, "Cancel",
-				14, new MenuCallback());
+		_buttons[1] = new Button(_screen, 10, 550, 100, 40, "Cancel", 14,
+				new MenuCallback());
 
-		_name = new TextBox(_screen, 150, 250, 500, 100, 120, "whoo", 32, "Name");
-		//_box = new RoundRectangle2D.Double(100, 200, 600, 300, 25, 25);
+		_name = new TextBox(_screen, 150, 250, 500, 100, 120, "whoo", 32,
+				"Name");
+		// _box = new RoundRectangle2D.Double(100, 200, 600, 300, 25, 25);
 	}
 
 	private class MenuCallback implements Callback {
 		public void invoke() {
-			Menu menu = new Menu(_screen);
+			IntroMenu menu = new IntroMenu(_screen);
 			_screen.popHook();
 			menu.setup();
 			_screen.pushHook(menu);
 		}
 	}
-	
+
 	private class MainMenuLayoutCallback implements Callback {
 		public void invoke() {
-			MainMenuLayout menu = new MainMenuLayout(_screen);
-			menu.setup();
-			_screen.popHook();
-			_screen.pushHook(menu);
+			String name = _name.getValue().substring(0,
+					_name.getValue().length() - 1);
+			System.out.println(FilesInFolder.getNames().indexOf(name));
+			if (FilesInFolder.getNames().indexOf(name) < 0) {
+				_nameTaken = false;
+				// _loading = true;
+				BudgetData.put(name);
+				BudgetData.setup();
+				MainMenuLayout menu = new MainMenuLayout(_screen);
+				menu.setup();
+				_screen.popHook();
+				_screen.pushHook(menu);
+			}
+			else {
+				_nameTaken = true;
+				System.out.println("stopped cycle");
+			}
+				
 		}
 	}
 
 	@Override
 	public void step(Graphics2D graphics) {
 		graphics.setColor(new Color(.3f, .3f, .3f));
-		graphics.fillRect(0,0,800,600);
-		graphics.setColor(new Color( .2f, .2f, .2f));
+		graphics.fillRect(0, 0, 800, 600);
+		graphics.setColor(new Color(.2f, .2f, .2f));
 		graphics.fillRoundRect(105, 205, 600, 300, 25, 25);
 		graphics.setColor(new Color(.8f, .8f, .8f));
 		graphics.fillRoundRect(100, 200, 600, 300, 25, 25);
@@ -74,6 +91,12 @@ public class NewAccountMenu extends DefaultHook {
 		for (Button button : _buttons)
 			button.draw(graphics);
 		_name.draw(graphics);
+		if (_nameTaken){
+			graphics.setColor(Color.RED);
+			graphics.setFont(_text);
+			graphics.drawString("Name already taken. Choose another name.", 
+					_screen.getXOffset(graphics, _text, "Name already taken. Choose another name."), 540);
+		}
 	}
 
 	private void drawTitle(Graphics2D graphics) {
@@ -89,17 +112,20 @@ public class NewAccountMenu extends DefaultHook {
 		graphics.drawString(text2, xOffset2, _screen.getHeight() / 2 - 180);
 	}
 
-	@Override 
+	@Override
 	public void keyTyped(KeyEvent event) {
 		_name.update(event);
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent event) {
-		if (event.getKeyCode() == KeyEvent.VK_ENTER)
-			BudgetData.put(_name.getValue().substring(0, _name.getValue().length() - 1));
+		/*
+		 * if (event.getKeyCode() == KeyEvent.VK_ENTER)
+		 * BudgetData.put(_name.getValue().substring(0,
+		 * _name.getValue().length() - 1));
+		 */
 	}
-	
+
 	@Override
 	public void keyReleased(KeyEvent event) {
 	}

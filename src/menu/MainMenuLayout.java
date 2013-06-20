@@ -1,6 +1,6 @@
 package menu;
 
-import java.awt.Color;   
+import java.awt.Color;    
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import data.BudgetData;
-import data.Loader;
 
 import graphics.DefaultHook;
 import graphics.Screen;
@@ -31,15 +30,14 @@ public class MainMenuLayout extends DefaultHook {
         int cx = screen.getWidth() / 2,
             cy = screen.getHeight() / 2;
 
-        buttons = new Button[3];
+        buttons = new Button[2];
         buttons[0] = new Button(screen, cx - 200, cy - 160, 400, 120, BudgetData.getName(), 48,
                                 new NewAccountCallback());
 
         buttons[1] = new Button(screen, 10, 550, 100, 40, "Quit",	14,
                 new QuitButtonCallback());
         
-        buttons[2] = new Button(screen, 10, 500, 100, 40, "Save", 14,
-        		new SaveButtonCallback());
+
         
     }
 
@@ -57,16 +55,7 @@ public class MainMenuLayout extends DefaultHook {
             screen.shutdown();
         }
     }
-    
-    private class SaveButtonCallback implements Callback {
-    	public void invoke() {
-    		try {
-				Loader.saveData(BudgetData.getName() + ".dat");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	}
-    }
+
 
     @Override
     public void step(Graphics2D graphics) {
