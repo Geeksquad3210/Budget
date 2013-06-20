@@ -34,7 +34,7 @@ public class NewAccountMenu extends DefaultHook {
 	public void setup() {
 
 		_buttons = new Button[2];
-		_buttons[0] = new Button(_screen, 475, 385, 150, 75, "Load", 26,
+		_buttons[0] = new Button(_screen, 475, 385, 150, 75, "Create", 26,
 				new MainMenuLayoutCallback());
 
 		_buttons[1] = new Button(_screen, 175, 385, 150, 75, "Cancel", 26,
