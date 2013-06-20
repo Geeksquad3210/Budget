@@ -34,10 +34,10 @@ public class NewAccountMenu extends DefaultHook {
 	public void setup() {
 
 		_buttons = new Button[2];
-		_buttons[0] = new Button(_screen, 525, 400, 150, 75, "Create", 36,
+		_buttons[0] = new Button(_screen, 475, 385, 150, 75, "Load", 26,
 				new MainMenuLayoutCallback());
 
-		_buttons[1] = new Button(_screen, 10, 550, 100, 40, "Cancel", 14,
+		_buttons[1] = new Button(_screen, 175, 385, 150, 75, "Cancel", 26,
 				new MenuCallback());
 
 		_name = new TextBox(_screen, 150, 250, 500, 100, 120, "whoo", 32,
@@ -58,7 +58,6 @@ public class NewAccountMenu extends DefaultHook {
 		public void invoke() {
 			String name = _name.getValue().substring(0,
 					_name.getValue().length() - 1);
-			System.out.println(FilesInFolder.getNames().indexOf(name));
 			if (FilesInFolder.getNames().indexOf(name) < 0) {
 				_nameTaken = false;
 				// _loading = true;

@@ -10,12 +10,15 @@ import graphics.Screen;
 
 public class Button {
 
-    private Rectangle rect;
-    private Callback callback;
+    protected Rectangle rect;
+    protected Callback callback;
     private Font font;
-    private String label;
+    protected String label;
     private int xOffset, yOffset;
-    private boolean pressed, hover, toggle, oldButtonDown;
+    protected boolean pressed;
+	protected boolean hover;
+	protected boolean toggle;
+	protected boolean oldButtonDown;
 
     public Button(Screen screen, int x, int y, int w, int h, String text,
                   float size, Callback cb) {
@@ -79,5 +82,9 @@ public class Button {
         graphics.setColor(Color.WHITE);
         graphics.setFont(font);
         graphics.drawString(label, rect.x + xOffset, rect.y + yOffset);
+    }
+
+    public String getLabel(){
+    	return label;
     }
 }
