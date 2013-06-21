@@ -8,6 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import util.Tools;
 
@@ -32,11 +35,9 @@ public class MainMenuLayout extends DefaultHook {
 	public void setup() {
 		int cx = screen.getWidth() / 2, cy = screen.getHeight() / 2;
 
-		buttons = new Button[2];
-		buttons[0] = new Button(screen, cx - 200, cy - 160, 400, 120,
-				BudgetData.getName(), 48, new NewAccountCallback());
+		buttons = new Button[1];
 
-		buttons[1] = new Button(screen, 10, 550, 100, 40, "Quit", 14,
+		buttons[0] = new Button(screen, 10, 550, 100, 40, "Quit", 14,
 				new QuitButtonCallback());
 
 	}
@@ -60,6 +61,7 @@ public class MainMenuLayout extends DefaultHook {
 	public void step(Graphics2D graphics) {
 		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		
 		graphics.setColor(new Color(.9f, .95f, .97f));
 		graphics.fillRect(0, 0, 800, 600);
 		
@@ -73,9 +75,29 @@ public class MainMenuLayout extends DefaultHook {
 		graphics.drawImage(Tools.createDropShadow(new Rectangle2D.Double(0, 0,
 				800, 120), 10), 0, 0, null);
 		graphics.fillRect(0, 0, 800, 120);
+		drawTitle(graphics);
 		graphics.setColor(Color.WHITE);
 		for (Button button : buttons)
 			button.draw(graphics);
+	}
+	
+	private void drawTitle(Graphics2D graphics) {
+		String text1 = BudgetData.getName();
+		Date date = new Date();
+		Format formatter = new SimpleDateFormat("MMMM dd, yyyy");
+		Format formatter2 = new SimpleDateFormat("hh:mm:ss aa");
+		String text2 = formatter.format(date);
+		String text3 = formatter2.format(date);
+		int xOffset1 = screen.getXOffset(graphics, bigFont, text1);
+		int xOffset2 = screen.getXOffset(graphics, smallFont, text2) + 300;
+		int xOffset3 = screen.getXOffset(graphics, smallFont, text3) + 300;
+		graphics.setColor(Color.GRAY);
+		graphics.setFont(bigFont);
+		graphics.drawString(text1, xOffset1, 80);
+		graphics.setColor(Color.GRAY);
+		graphics.setFont(smallFont);
+		graphics.drawString(text2, xOffset2, screen.getHeight() / 2 - 250);
+		graphics.drawString(text3, xOffset2, screen.getHeight() / 2 - 220);
 	}
 
 	@Override
