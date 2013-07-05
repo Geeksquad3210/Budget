@@ -12,6 +12,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import menu.budget.BudgetLayer;
+
 import util.Tools;
 
 import data.BudgetData;
@@ -35,19 +37,24 @@ public class MainMenuLayout extends DefaultHook {
 	public void setup() {
 		int cx = screen.getWidth() / 2, cy = screen.getHeight() / 2;
 
-		buttons = new Button[1];
+		buttons = new Button[2];
 
 		buttons[0] = new Button(screen, 10, 550, 100, 40, "Quit", 14,
 				new QuitButtonCallback());
+		
+		buttons[1] = new Button(screen, 10, 500, 100, 40, "Budget", 14,
+				new BudgetLayerCallback());
 
 	}
 
-	private class NewAccountCallback implements Callback {
+	
+	
+	private class BudgetLayerCallback implements Callback {
 		public void invoke() {
-			NewAccountMenu newAccScrn = new NewAccountMenu(screen);
-			newAccScrn.setup();
+			BudgetLayer budlyr = new BudgetLayer(screen);
+			budlyr.setup();
 			screen.popHook();
-			screen.pushHook(newAccScrn);
+			screen.pushHook(budlyr);
 		}
 	}
 

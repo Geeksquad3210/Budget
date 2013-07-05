@@ -40,8 +40,7 @@ public class NewAccountMenu extends DefaultHook {
 		_buttons[1] = new Button(_screen, 175, 385, 150, 75, "Cancel", 26,
 				new MenuCallback());
 
-		_name = new TextBox(_screen, 150, 250, 500, 100, 120, "whoo", 32,
-				"Name");
+		_name = new TextBox(_screen, 150, 250, 500, 100, "Your name here", 32, true);
 		// _box = new RoundRectangle2D.Double(100, 200, 600, 300, 25, 25);
 	}
 

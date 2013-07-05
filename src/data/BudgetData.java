@@ -9,8 +9,6 @@ import java.util.Locale;
 public class BudgetData {
 
 	private static String _name;
-	private static HashMap<Date, Transaction> _transactions;
-	private static Date _startDate, _lastSaveDate;
 
 	public static void setup() {
 		Connection c = null;
@@ -19,11 +17,10 @@ public class BudgetData {
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:" + _name + ".db");
 			System.out.println("Opened/Created database successfully");
-
+			
 			stmt = c.createStatement();
-			String sql = "CREATE TABLE TRANSACTIONS "
-					+ "(ID INT PRIMARY KEY     NOT NULL,"
-					+ " TIME           TEXT    NOT NULL, "
+			String sql = "CREATE TABLE Transactions "
+					+ "(TIME           TEXT    NOT NULL, "
 					+ " VALUE          INT     NOT NULL, "
 					+ " MEMO           TEXT)";
 			stmt.executeUpdate(sql);
@@ -36,37 +33,34 @@ public class BudgetData {
 		System.out.println("Table created successfully");
 	}
 
-	public static void load() {
-		Connection c = null;
-		Statement stmt = null;
-		try {
-			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:" + _name + ".db");
-			System.out.println("Opened/Created database successfully");
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
-		}
-	}
-
 	public static void insert(Transaction t) {
-		Connection c = null;
+   		Connection c = null;
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:" + _name + ".db");
-			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
-
+			
+			
 			stmt = c.createStatement();
+			
 			SimpleDateFormat format = new SimpleDateFormat(
-					"EEE, MMMM dd, hh:mm aa");
-			String sql = "INSERT INTO COMPANY (ID,TIME,VALUE,MEMO) "
-					+ "VALUES (1,  " + format.format(t.getDate()) + ", '"
-					+ t.getValue() + "', " + t.getDescription() + " );";
-			stmt.executeUpdate(sql);
+					"EEE MMMM dd hh:mm aa");
+			
+			String sql = "INSERT INTO Transactions (TIME,VALUE,MEMO) "
+					+ "VALUES ('"
+					+ format.format(t.getDate()) + "', "
+					+ t.getValue() + ", '"
+					+ t.getDescription() + "' );";
+			
+			System.out.println(sql);
+		
+			
+			stmt.executeUpdate(sql); /// THIS IS THE PROBLEM
+		
 
 			stmt.close();
+			
 			c.commit();
 			c.close();
 		} catch (Exception e) {
@@ -76,7 +70,7 @@ public class BudgetData {
 		System.out.println("Records created successfully");
 	}
 
-	public static void load(String name) {
+	public static void load() {
 		Connection c = null;
 		Statement stmt = null;
 		try {
@@ -86,7 +80,7 @@ public class BudgetData {
 			System.out.println("Opened database successfully");
 
 			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM COMPANY;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Transactions;");
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String time = rs.getString("time");
@@ -98,9 +92,6 @@ public class BudgetData {
 				System.out.println("MEMO = " + memo);
 				System.out.println();
 
-				put(new Transaction(value, new SimpleDateFormat(
-						"EEE, MMMM dd, hh:mm aa", Locale.ENGLISH).parse(time),
-						memo));
 			}
 			rs.close();
 			stmt.close();
@@ -116,47 +107,12 @@ public class BudgetData {
 		_name = name;
 	}
 
-	public static void put(Transaction transaction) {
-		_transactions.put(transaction.getDate(), transaction);
-	}
-
-	public static void put(Date date, boolean isStartDate) {
-		if (isStartDate) {
-			_startDate = date;
-		} else
-			_lastSaveDate = date;
-	}
-
 	public static String getName() {
 		return _name;
 	}
 
 	public static void setName(String name) {
 		_name = name;
-	}
-
-	public static HashMap<Date, Transaction> getTransactions() {
-		return _transactions;
-	}
-
-	public static void setTransactions(HashMap<Date, Transaction> map) {
-		_transactions = map;
-	}
-
-	public static Date getStartDate() {
-		return _startDate;
-	}
-
-	public static void setStartDate(Date date) {
-		_startDate = date;
-	}
-
-	public static Date getLastSaveDate() {
-		return _lastSaveDate;
-	}
-
-	public static void setLastSaveDate(Date date) {
-		_lastSaveDate = date;
 	}
 
 }

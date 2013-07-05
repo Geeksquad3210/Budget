@@ -21,7 +21,6 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
     private Stack<Hook> hooks;
     private JFrame frame;
     private Font font;
-    private int lols;
 
     public Screen() {
         running = false;
@@ -45,7 +44,6 @@ public class Screen extends Canvas implements Runnable, KeyListener, MouseInputL
         frame.add(this);
         frame.pack();
         frame.setVisible(true);
-        lols = 0;
     }
 
     private Font loadFont() {

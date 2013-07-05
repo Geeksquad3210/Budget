@@ -17,24 +17,24 @@ public class TextBox {
 
 	private Rectangle rect;
 	private Font font;
-	private String label;
-	private String value;
-	private String button;
-	private int xOffset, yOffset;
-	private boolean hover, pressed, initialized;
 
-	public TextBox(Screen screen, int x, int y, int w, int h, int dir,
-			String text, float size, String buttonname) {
+	private String value;
+	private int xOffset, yOffset;
+	private boolean hover, pressed, initialized, isLetter;
+	
+
+	public TextBox(Screen screen, int x, int y, int w, int h,
+			String text, float size, boolean isleter) {
 		rect = new Rectangle(x, y, w, h);
 		font = screen.getFont().deriveFont(size);
-		label = text;
-		button = buttonname;
+	
 		// value = KeyEvent.getKeyText(Preferences.getValue(button));
-		value = "your name here";
+		value = text;
 		xOffset = yOffset = -1;
 		hover = false;
 		pressed = false;
 		initialized = false;
+		isLetter = isleter;
 	}
 
 	public boolean isPressed() {
@@ -71,15 +71,17 @@ public class TextBox {
 				initialized = true;
 				value = "_";
 			}
-			if (value.length() >= 2 && c == '\b')
-				value = value.substring(0,value.length() - 2) + "_";
+			if (value.length() >= 2 && c == '\b'){
+				value = value.substring(0,value.length() - 2);
+				value = value + "_";
+			}
 			
 		
 			else if (c == '.'){
 				if (value.length() >= 2 && !value.substring(value.length() - 2, value.length() - 1).equals("."))
 					value = value.substring(0,value.length() - 1) + "." + "_";
 			}
-			else if (java.lang.Character.isLetter(c))
+			else if ((java.lang.Character.isLetter(c) && isLetter) || (java.lang.Character.isDigit(c) && !isLetter));
 				value = value.substring(0,value.length() - 1) + c + "_";
 		}
 		
@@ -92,9 +94,9 @@ public class TextBox {
 	
 	public void draw(Graphics2D graphics) {
 		if (xOffset == -1) {
-			xOffset = (int) (rect.width - font.getStringBounds(label,
+			xOffset = (int) (rect.width - font.getStringBounds(value,
 					graphics.getFontRenderContext()).getWidth()) / 2;
-			yOffset = (int) (font.getLineMetrics(label,
+			yOffset = (int) (font.getLineMetrics(value,
 					graphics.getFontRenderContext()).getAscent() + rect.height) / 2;
 		}
 
@@ -112,6 +114,6 @@ public class TextBox {
 		xOffset = (int) (rect.width - font.getStringBounds(value,
 				graphics.getFontRenderContext()).getWidth()) / 2;
 		graphics.drawString(value, rect.x + xOffset, rect.y + yOffset);
-
+		
 	}
 }
